@@ -3,11 +3,13 @@ package com.example.raphaelluchini.hitcounter;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.SoundEffectConstants;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -19,8 +21,10 @@ public class MainActivity extends AppCompatActivity {
     public TextView textView = null;
     public TextView info = null;
     public Button resetButton = null;
+    public RelativeLayout layout = null;
     public int count = 0;
     public DBHelper mydb = null;
+    public MediaPlayer mp = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
         textView = (TextView) findViewById(R.id.counter);
         info = (TextView) findViewById(R.id.info);
         resetButton = (Button) findViewById(R.id.buttonReset);
+        layout = (RelativeLayout) findViewById(R.id.mainLayout);
+
 
         mydb = new DBHelper(this);
         Cursor cursor = mydb.getNumber(1);
@@ -63,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onTouchEvent(MotionEvent e) {
         switch (e.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                layout.playSoundEffect(SoundEffectConstants.CLICK);
                 count++;
                 return true;
         }
@@ -74,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void setColors(Integer num, TextView t, TextView i){
         if(num % 10 == 0){
-            RelativeLayout layout = (RelativeLayout) findViewById(R.id.mainLayout);
             Random rnd = new Random();
             int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
             int color2 = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
